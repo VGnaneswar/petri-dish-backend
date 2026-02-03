@@ -1,0 +1,23 @@
+# env
+.env
+.venv/
+
+# python
+__pycache__/
+*.pyc
+
+# data & outputs (VERY IMPORTANT)
+app/data/
+backend/data/
+runs/
+
+# uploads & results
+app/data/uploads/
+app/data/results/
+
+# ML models (DO NOT PUSH)
+*.pt
+*.onnx
+
+# OS
+.DS_Store

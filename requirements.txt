@@ -1,0 +1,25 @@
+# Core
+fastapi
+uvicorn[standard]
+sqlalchemy
+
+torch
+torchvision
+ultralytics   
+cloudinary
+pymysql
+opencv-python
+pillow
+python-dotenv
+
+numpy
+pandas
+scikit-learn
+
+
+python-multipart   
+requests
+
+
+tqdm               
+pydantic           

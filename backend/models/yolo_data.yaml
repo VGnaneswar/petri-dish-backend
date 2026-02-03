@@ -1,0 +1,11 @@
+path: app/backend/data
+train: images/train
+val: images/val
+test: images/test
+
+names:
+  0: P.aeruginosa
+  1: B.subtilis
+  2: E.coli
+  3: C.albicans
+  4: S.aureus
