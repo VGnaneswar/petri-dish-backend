@@ -2,7 +2,7 @@
 fastapi
 uvicorn[standard]
 sqlalchemy
-
+cryptography>=41.0.0
 torch
 torchvision
 ultralytics   
