@@ -5,8 +5,6 @@ from backend.database.connection import SessionLocal
 from backend.database.models import ImageRecord
 from backend.agents.ingestor_agent import router as ingestor_router
 from dotenv import load_dotenv
-from backend.scripts.model_loader import ensure_model
-
 import os
 
 # ✅ Load environment variables
@@ -38,18 +36,13 @@ def get_db():
     finally:
         db.close()
 
-# ✅ Use environment-based folders
+# ✅ Use environment-based folders (TEMP only)
 UPLOAD_DIR = os.getenv("UPLOAD_DIR", "app/data/uploads")
 RESULTS_DIR = os.getenv("RESULTS_DIR", "app/data/results")
 
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
-
-
-@app.on_event("startup")
-def startup_event():
-    ensure_model()
 
 @app.get("/")
 def root():
@@ -63,11 +56,11 @@ def get_output_image(image_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Image not found")
 
     return {
-    "id": image.id,
-    "filename": image.filename,
-    "upload_time": image.upload_time,
-    "output_image_url": image.output_image_url,
-    "folder_path": image.folder_path
+        "id": image.id,
+        "filename": image.filename,
+        "upload_time": image.upload_time,
+        "output_image_url": image.output_image_url,
+        "folder_path": image.folder_path
     }
 
 
@@ -77,6 +70,7 @@ def get_colony_count(image_id: int, db: Session = Depends(get_db)):
     if not image:
         raise HTTPException(status_code=404, detail="Image not found")
     return {"image_id": image.id, "colony_count": image.colony_count}
+
 
 @app.get("/history")
 def get_all_images(db: Session = Depends(get_db)):
@@ -91,17 +85,9 @@ def get_all_images(db: Session = Depends(get_db)):
                 "id": img.id,
                 "filename": img.filename or "Unknown",
                 "upload_time": img.upload_time.isoformat() if img.upload_time else "N/A",
-
-                # ✅ colony count included
                 "colony_count": img.colony_count,
-
-            
                 "output_image_url": img.output_image_url,
-
-                # ✅ for frontend static retrieval
                 "folder_path": img.folder_path,
-
-                # ✅ include detections if needed
                 "detections": [
                     {
                         "class_name": d.class_name,
