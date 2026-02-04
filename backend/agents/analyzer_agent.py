@@ -65,7 +65,7 @@ def analyze_image(img_path: str, folder_name: str, filename: str):
             )
 
         image_record.colony_count = colony_count
-        image_record.output_image_url = image_url
+        image_record.output_image_url = data["output_image_url"]
 
         db.commit()
         db.refresh(image_record)
