@@ -36,7 +36,7 @@ def get_db():
     finally:
         db.close()
 
-# ✅ Use environment-based folders (TEMP only)
+# ✅ Environment-based folders
 UPLOAD_DIR = os.getenv("UPLOAD_DIR", "app/data/uploads")
 RESULTS_DIR = os.getenv("RESULTS_DIR", "app/data/results")
 
@@ -48,7 +48,10 @@ os.makedirs(RESULTS_DIR, exist_ok=True)
 def root():
     return {"message": "✅ Petri Dish Detection API is running successfully!"}
 
-# ✅ Retrieve processed image by ID
+
+# ==========================================
+# 📸 GET OUTPUT IMAGE
+# ==========================================
 @app.get("/output/{image_id}")
 def get_output_image(image_id: int, db: Session = Depends(get_db)):
     image = db.query(ImageRecord).filter(ImageRecord.id == image_id).first()
@@ -60,26 +63,45 @@ def get_output_image(image_id: int, db: Session = Depends(get_db)):
         "filename": image.filename,
         "upload_time": image.upload_time,
         "output_image_url": image.output_image_url,
-        "folder_path": image.folder_path
+        "folder_path": image.folder_path,
+        "type": image.plate_type,
+        "bacteria": image.bacteria,
+        "confidence": image.confidence,
+        "colony_count": image.colony_count
     }
 
 
+# ==========================================
+# 🔢 GET COLONY COUNT
+# ==========================================
 @app.get("/count/{image_id}")
 def get_colony_count(image_id: int, db: Session = Depends(get_db)):
     image = db.query(ImageRecord).filter(ImageRecord.id == image_id).first()
     if not image:
         raise HTTPException(status_code=404, detail="Image not found")
-    return {"image_id": image.id, "colony_count": image.colony_count}
+
+    return {
+        "image_id": image.id,
+        "colony_count": image.colony_count,
+        "type": image.plate_type,
+        "bacteria": image.bacteria,
+        "confidence": image.confidence
+    }
 
 
+# ==========================================
+# 📜 HISTORY ENDPOINT (🔥 FIXED)
+# ==========================================
 @app.get("/history")
 def get_all_images(db: Session = Depends(get_db)):
     try:
         images = db.query(ImageRecord).order_by(ImageRecord.upload_time.desc()).all()
+
         if not images:
             return []
 
         history_data = []
+
         for img in images:
             history_data.append({
                 "id": img.id,
@@ -88,6 +110,12 @@ def get_all_images(db: Session = Depends(get_db)):
                 "colony_count": img.colony_count,
                 "output_image_url": img.output_image_url,
                 "folder_path": img.folder_path,
+
+                # 🔥 CRITICAL FIX
+                "type": img.plate_type,
+                "bacteria": img.bacteria,
+                "confidence": img.confidence,
+
                 "detections": [
                     {
                         "class_name": d.class_name,
@@ -101,4 +129,7 @@ def get_all_images(db: Session = Depends(get_db)):
         return history_data
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Error fetching history: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error fetching history: {str(e)}"
+        )
