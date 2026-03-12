@@ -4,6 +4,11 @@ import HistoryModal from "./HistoryModal";
 function HistoryTable({ history }) {
   const [selected, setSelected] = useState(null);
 
+  const formatConfidence = (conf) =>
+    conf !== null && conf !== undefined
+      ? (conf * 100).toFixed(1) + "%"
+      : "—";
+
   return (
     <div className="history-section">
       <h2>Detection History</h2>
@@ -50,11 +55,23 @@ function HistoryTable({ history }) {
                 <td>{item.filename}</td>
 
                 <td>
-                  {item.type === "streak"
-                    ? `Streak: ${item.bacteria}`
-                    : item.type === "mixed"
-                    ? `Mixed (${item.colony_count})`
-                    : item.colony_count ?? "N/A"}
+                  <div style={{ fontSize: "0.9rem" }}>
+                    <div>
+                      <strong>{item.type?.toUpperCase()}</strong>
+                    </div>
+
+                    <div>
+                      {item.type === "streak"
+                        ? item.bacteria || "N/A"
+                        : item.type === "mixed"
+                        ? `${item.colony_count} colonies`
+                        : `${item.colony_count} colonies`}
+                    </div>
+
+                    <div style={{ color: "#666" }}>
+                      {formatConfidence(item.confidence)}
+                    </div>
+                  </div>
                 </td>
 
                 <td>{item.upload_time}</td>
@@ -65,7 +82,10 @@ function HistoryTable({ history }) {
       )}
 
       {selected && (
-        <HistoryModal item={selected} onClose={() => setSelected(null)} />
+        <HistoryModal
+          item={selected}
+          onClose={() => setSelected(null)}
+        />
       )}
     </div>
   );

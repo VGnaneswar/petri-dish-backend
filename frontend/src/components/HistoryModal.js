@@ -16,6 +16,16 @@ function HistoryModal({ item, onClose }) {
     });
   };
 
+  const formattedConfidence =
+    item.confidence !== null && item.confidence !== undefined
+      ? (item.confidence * 100).toFixed(2) + "%"
+      : "N/A";
+
+  const colonies =
+    item.type === "streak"
+      ? "Not Applicable"
+      : item.colony_count ?? "—";
+
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div
@@ -38,7 +48,7 @@ function HistoryModal({ item, onClose }) {
               onLoad={handleImageLoad}
             />
 
-            {/* Only draw boxes for spread or mixed */}
+            {/* Draw boxes only for spread or mixed */}
             {dims &&
               item.type !== "streak" &&
               item.detections?.map((det, idx) => {
@@ -72,31 +82,25 @@ function HistoryModal({ item, onClose }) {
         <div className="modal-details">
           <p><strong>Filename:</strong> {item.filename}</p>
 
-          {item.type === "streak" ? (
-            <>
-              <p><strong>Plate Type:</strong> Streak</p>
-              <p><strong>Bacteria:</strong> {item.bacteria}</p>
-              <p>
-                <strong>Confidence:</strong>{" "}
-                {(item.confidence * 100).toFixed(1)}%
-              </p>
-            </>
-          ) : item.type === "mixed" ? (
-            <>
-              <p><strong>Plate Type:</strong> Mixed</p>
-              <p><strong>Colonies:</strong> {item.colony_count}</p>
-              <p><strong>Bacteria:</strong> {item.bacteria}</p>
-              <p>
-                <strong>Confidence:</strong>{" "}
-                {(item.confidence * 100).toFixed(1)}%
-              </p>
-            </>
-          ) : (
-            <>
-              <p><strong>Plate Type:</strong> Spread</p>
-              <p><strong>Colonies:</strong> {item.colony_count}</p>
-            </>
-          )}
+          <p>
+            <strong>Plate Type:</strong>{" "}
+            {item.type ? item.type.toUpperCase() : "N/A"}
+          </p>
+
+          <p>
+            <strong>Detected Bacteria:</strong>{" "}
+            {item.bacteria || "N/A"}
+          </p>
+
+          <p>
+            <strong>Average Confidence:</strong>{" "}
+            {formattedConfidence}
+          </p>
+
+          <p>
+            <strong>Detected Colonies:</strong>{" "}
+            {colonies}
+          </p>
 
           <p><strong>Upload Time:</strong> {item.upload_time}</p>
         </div>

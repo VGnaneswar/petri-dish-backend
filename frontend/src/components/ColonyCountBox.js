@@ -1,41 +1,35 @@
 import React from "react";
 
 function ColonyCountBox({ count, type, bacteria, confidence }) {
-  // 🔵 STREAK ONLY
-  if (type === "streak") {
-    return (
-      <div className="colony-count-box">
-        <h2>Streak Growth Detected</h2>
-        <p><strong>Bacteria:</strong> {bacteria || "Unknown"}</p>
-        <p>
-          <strong>Confidence:</strong>{" "}
-          {confidence ? (confidence * 100).toFixed(1) + "%" : "—"}
-        </p>
-      </div>
-    );
-  }
+  if (!type) return null;
 
-  // 🟡 MIXED
-  if (type === "mixed") {
-    return (
-      <div className="colony-count-box">
-        <h2>Mixed Plate Detected</h2>
-        <p><strong>Colonies:</strong> {count ?? "—"}</p>
-        <hr />
-        <p><strong>Streak Bacteria:</strong> {bacteria || "Unknown"}</p>
-        <p>
-          <strong>Confidence:</strong>{" "}
-          {confidence ? (confidence * 100).toFixed(1) + "%" : "—"}
-        </p>
-      </div>
-    );
-  }
+  const formattedConfidence =
+    confidence !== null && confidence !== undefined
+      ? (confidence * 100).toFixed(2) + "%"
+      : "N/A";
 
-  // 🟢 DEFAULT SPREAD
+  const colonies =
+    type === "streak" ? "Not Applicable" : count ?? "—";
+
   return (
     <div className="colony-count-box">
-      <h2>Detected Colonies</h2>
-      <p>{count !== null ? count : "—"}</p>
+      <h2>Analysis Result</h2>
+
+      <p>
+        <strong>Plate Type:</strong> {type.toUpperCase()}
+      </p>
+
+      <p>
+        <strong>Detected Bacteria:</strong> {bacteria || "N/A"}
+      </p>
+
+      <p>
+        <strong>Average Confidence:</strong> {formattedConfidence}
+      </p>
+
+      <p>
+        <strong>Detected Colonies:</strong> {colonies}
+      </p>
     </div>
   );
 }

@@ -22,16 +22,21 @@ class ImageRecord(Base):
     # Original uploaded filename
     filename = Column(String(255), nullable=False, index=True)
 
-    # Folder used during processing (optional but fine to keep)
+    # Folder used during processing
     folder_path = Column(String(512), nullable=False)
 
     upload_time = Column(DateTime, default=datetime.utcnow)
 
-    # ✅ Cloudinary public URL (NO Base64, NO local dependency)
+    # Cloudinary public URL
     output_image_url = Column(String(512), nullable=True)
 
     # Total detected colonies
     colony_count = Column(Integer, default=0)
+
+    # 🔥 NEW HYBRID FIELDS
+    plate_type = Column(String(50), nullable=True)
+    bacteria = Column(String(100), nullable=True)
+    confidence = Column(Float, nullable=True)
 
     detections = relationship(
         "DetectionRecord",

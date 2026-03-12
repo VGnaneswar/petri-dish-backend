@@ -90,6 +90,9 @@ def analyze_image(img_path: str, folder_name: str, filename: str):
         # 5️⃣ Save final results
         image_record.colony_count = colony_count
         image_record.output_image_url = data["output_image_url"]
+        image_record.plate_type = plate_type
+        image_record.bacteria = bacteria
+        image_record.confidence = confidence
 
         db.commit()
         db.refresh(image_record)

@@ -16,9 +16,13 @@ function App() {
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  const [colonyCount, setColonyCount] = useState(null);
 
-  // ✅ Fetch history from backend on load
+  // 🔥 NEW STATES
+  const [colonyCount, setColonyCount] = useState(null);
+  const [plateType, setPlateType] = useState(null);
+  const [bacteria, setBacteria] = useState(null);
+  const [confidence, setConfidence] = useState(null);
+
   useEffect(() => {
     const fetchHistory = async () => {
       try {
@@ -32,7 +36,6 @@ function App() {
     fetchHistory();
   }, []);
 
-  // ✅ Upload handler
   const handleImageUpload = async (e) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
@@ -40,7 +43,12 @@ function App() {
       setLoading(true);
       setErrorMsg("");
       setOutputImage(null);
+
+      // 🔥 RESET EVERYTHING
       setColonyCount(null);
+      setPlateType(null);
+      setBacteria(null);
+      setConfidence(null);
 
       const formData = new FormData();
       formData.append("file", file);
@@ -50,14 +58,14 @@ function App() {
           headers: { "Content-Type": "multipart/form-data" },
         });
 
-        const outputUrl = res.data.output_image_url;
+        const data = res.data;
 
+        setOutputImage(data.output_image_url);
+        setColonyCount(data.colony_count);
+        setPlateType(data.type);
+        setBacteria(data.bacteria);
+        setConfidence(data.confidence);
 
-        // ✅ Set detected image + colony count
-        setOutputImage(outputUrl);
-        setColonyCount(res.data.colony_count);
-
-        // ✅ Refresh history after upload
         const historyRes = await api.get("/history");
         setHistory(historyRes.data);
 
@@ -90,8 +98,13 @@ function App() {
           <OutputImageBox outputImage={outputImage} loading={loading} />
         </div>
 
-        {/* ✅ Colony Count Below Image Boxes */}
-        <ColonyCountBox count={colonyCount} />
+        {/* 🔥 UPDATED PROPS */}
+        <ColonyCountBox
+          count={colonyCount}
+          type={plateType}
+          bacteria={bacteria}
+          confidence={confidence}
+        />
 
         {loading && <p className="loading">Processing image...</p>}
         {errorMsg && <p className="error">{errorMsg}</p>}
