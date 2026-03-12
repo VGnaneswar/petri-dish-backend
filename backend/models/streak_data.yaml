@@ -1,0 +1,10 @@
+path: C:/Users/gnane/Downloads/app/backend/data/streak
+train: images/train
+val: images/val
+test: images/test
+
+names:
+  0: Salmonella
+  1: Enterococcus
+  2: S.aureus
+  3: E.coli

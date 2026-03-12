@@ -28,7 +28,6 @@ function HistoryModal({ item, onClose }) {
 
         <h2>Detection Details</h2>
 
-        {/* 🖼️ Image + Bounding Boxes */}
         {item.output_image_url && (
           <div style={{ position: "relative", width: "100%" }}>
             <img
@@ -39,8 +38,9 @@ function HistoryModal({ item, onClose }) {
               onLoad={handleImageLoad}
             />
 
-            {/* 🔴 Bounding Boxes */}
+            {/* Only draw boxes for spread or mixed */}
             {dims &&
+              item.type !== "streak" &&
               item.detections?.map((det, idx) => {
                 const scaleX = dims.width / dims.naturalWidth;
                 const scaleY = dims.height / dims.naturalHeight;
@@ -71,9 +71,34 @@ function HistoryModal({ item, onClose }) {
 
         <div className="modal-details">
           <p><strong>Filename:</strong> {item.filename}</p>
-          <p><strong>Colonies Detected:</strong> {item.colony_count}</p>
+
+          {item.type === "streak" ? (
+            <>
+              <p><strong>Plate Type:</strong> Streak</p>
+              <p><strong>Bacteria:</strong> {item.bacteria}</p>
+              <p>
+                <strong>Confidence:</strong>{" "}
+                {(item.confidence * 100).toFixed(1)}%
+              </p>
+            </>
+          ) : item.type === "mixed" ? (
+            <>
+              <p><strong>Plate Type:</strong> Mixed</p>
+              <p><strong>Colonies:</strong> {item.colony_count}</p>
+              <p><strong>Bacteria:</strong> {item.bacteria}</p>
+              <p>
+                <strong>Confidence:</strong>{" "}
+                {(item.confidence * 100).toFixed(1)}%
+              </p>
+            </>
+          ) : (
+            <>
+              <p><strong>Plate Type:</strong> Spread</p>
+              <p><strong>Colonies:</strong> {item.colony_count}</p>
+            </>
+          )}
+
           <p><strong>Upload Time:</strong> {item.upload_time}</p>
-          <p><strong>Total Detections:</strong> {item.detections?.length ?? 0}</p>
         </div>
       </div>
     </div>

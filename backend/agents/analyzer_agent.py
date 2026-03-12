@@ -39,7 +39,7 @@ def analyze_image(img_path: str, folder_name: str, filename: str):
         if not image_url:
             raise RuntimeError("Cloudinary upload failed for original image")
 
-        # 3️⃣ Call Hugging Face YOLO
+        # 3️⃣ Call Hugging Face YOLO (Hybrid Model)
         response = requests.post(
             HF_YOLO_URL,
             json={"image_url": image_url},
@@ -53,7 +53,7 @@ def analyze_image(img_path: str, folder_name: str, filename: str):
 
         data = response.json()
 
-        # 🔐 4️⃣ Validate HF response (THIS FIXES YOUR 500)
+        # 🔐 Validate required detection fields (backward compatible)
         if "count" not in data:
             raise RuntimeError(f"HF response missing 'count': {data}")
 
@@ -65,10 +65,15 @@ def analyze_image(img_path: str, folder_name: str, filename: str):
 
         colony_count = data["count"]
 
-        # 5️⃣ Save detections
+        # 🆕 Hybrid fields (optional)
+        plate_type = data.get("type", "spread")
+        bacteria = data.get("bacteria")
+        confidence = data.get("confidence")
+
+        # 4️⃣ Save detections (only for spread or mixed)
         for det in data["detections"]:
             if "bbox" not in det or len(det["bbox"]) != 4:
-                continue  # skip malformed detection
+                continue
 
             db.add(
                 DetectionRecord(
@@ -82,14 +87,14 @@ def analyze_image(img_path: str, folder_name: str, filename: str):
                 )
             )
 
-        # 6️⃣ Save final results
+        # 5️⃣ Save final results
         image_record.colony_count = colony_count
         image_record.output_image_url = data["output_image_url"]
 
         db.commit()
         db.refresh(image_record)
 
-        # 7️⃣ Cleanup local temp file
+        # 6️⃣ Cleanup local temp file
         if os.path.exists(img_path):
             os.remove(img_path)
 
@@ -98,13 +103,18 @@ def analyze_image(img_path: str, folder_name: str, filename: str):
             "filename": filename,
             "upload_time": str(image_record.upload_time),
             "colony_count": colony_count,
-            "output_image_url": image_record.output_image_url
+            "output_image_url": image_record.output_image_url,
+            "type": plate_type,
+            "bacteria": bacteria,
+            "confidence": confidence
         }
 
     except Exception as e:
         db.rollback()
-        # 🔥 This error WILL now show real cause in Render logs
-        raise HTTPException(status_code=500, detail=f"Analyze image failed: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Analyze image failed: {str(e)}"
+        )
 
     finally:
         db.close()

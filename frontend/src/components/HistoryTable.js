@@ -17,7 +17,7 @@ function HistoryTable({ history }) {
               <th>ID</th>
               <th>Image</th>
               <th>Filename</th>
-              <th>Detected Colonies</th>
+              <th>Result</th>
               <th>Upload Time</th>
             </tr>
           </thead>
@@ -48,7 +48,15 @@ function HistoryTable({ history }) {
                 </td>
 
                 <td>{item.filename}</td>
-                <td>{item.colony_count ?? "N/A"}</td>
+
+                <td>
+                  {item.type === "streak"
+                    ? `Streak: ${item.bacteria}`
+                    : item.type === "mixed"
+                    ? `Mixed (${item.colony_count})`
+                    : item.colony_count ?? "N/A"}
+                </td>
+
                 <td>{item.upload_time}</td>
               </tr>
             ))}

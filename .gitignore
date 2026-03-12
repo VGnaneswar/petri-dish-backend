@@ -14,7 +14,7 @@ runs/
 # uploads & results
 app/data/uploads/
 app/data/results/
-
+backend/data/images/
 # ML models (DO NOT PUSH)
 *.pt
 *.onnx
