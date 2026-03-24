@@ -28,7 +28,7 @@ function HistoryModal({ item, onClose }) {
   return ReactDOM.createPortal(
     <div className="modal-overlay" onClick={onClose}>
       <div
-        className="modal-content fullscreen-modal"
+        className="modal-content"
         onClick={(e) => e.stopPropagation()}
       >
         {/* CLOSE BUTTON */}
