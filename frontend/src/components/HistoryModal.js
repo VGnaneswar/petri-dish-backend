@@ -53,7 +53,14 @@ function HistoryModal({ item, onClose }) {
 
         {/* IMAGE + BOXES */}
         {item.output_image_url && (
-          <div style={{ position: "relative", width: "100%" }}>
+          <div
+            style={{
+              position: "relative",
+              display: "inline-block",
+              maxWidth: "100%",
+              overflow: "hidden",
+            }}
+          >
             <img
               ref={imgRef}
               src={item.output_image_url}
@@ -61,9 +68,10 @@ function HistoryModal({ item, onClose }) {
               className="modal-image"
               onLoad={handleImageLoad}
               style={{
-                width: "100%",
+                display: "block",
+                maxWidth: "100%",
+                height: "auto",
                 borderRadius: "10px",
-                marginTop: "10px",
               }}
             />
 
@@ -74,10 +82,10 @@ function HistoryModal({ item, onClose }) {
                 const scaleX = dims.width / dims.naturalWidth;
                 const scaleY = dims.height / dims.naturalHeight;
 
-                const x1 = det.box[0] * scaleX;
-                const y1 = det.box[1] * scaleY;
-                const x2 = det.box[2] * scaleX;
-                const y2 = det.box[3] * scaleY;
+                const x1 = Math.max(0, det.box[0] * scaleX);
+                const y1 = Math.max(0, det.box[1] * scaleY);
+                const x2 = Math.min(dims.width, det.box[2] * scaleX);
+                const y2 = Math.min(dims.height, det.box[3] * scaleY);
 
                 return (
                   <div
@@ -90,8 +98,8 @@ function HistoryModal({ item, onClose }) {
                       height: y2 - y1,
                       border: "2px solid red",
                       boxSizing: "border-box",
+                      pointerEvents: "none",
                     }}
-                    title={`${det.class_name} (${(det.confidence * 100).toFixed(1)}%)`}
                   />
                 );
               })}
