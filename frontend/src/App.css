@@ -1,20 +1,22 @@
 /* ===== ROOT THEME VARIABLES ===== */
 .container.light {
-  --bg: linear-gradient(135deg, #dfffe8, #c7f7d4);
-  --glass: rgba(255, 255, 255, 0.25);
-  --text: #0f172a;
-  --accent: #22c55e;
-  --border: rgba(255, 255, 255, 0.35);
-  --shadow: rgba(0, 0, 0, 0.1);
+  /* Apple-inspired Light Theme */
+  --bg: linear-gradient(135deg, #f2f2f7, #ffffff);
+  --glass: rgba(255, 255, 255, 0.7);
+  --text: #1d1d1f;
+  --accent: #34c759;
+  --border: rgba(255, 255, 255, 0.6);
+  --shadow: rgba(0, 0, 0, 0.08);
 }
 
 .container.dark {
-  --bg: linear-gradient(135deg, #081c15, #0b2a20);
-  --glass: rgba(255, 255, 255, 0.08);
-  --text: #eafff3;
-  --accent: #22c55e;
+  /* Apple-inspired Dark Theme */
+  --bg: linear-gradient(135deg, #000000, #1c1c1e);
+  --glass: rgba(28, 28, 30, 0.7);
+  --text: #f5f5f7;
+  --accent: #30d158;
   --border: rgba(255, 255, 255, 0.15);
-  --shadow: rgba(0, 0, 0, 0.4);
+  --shadow: rgba(0, 0, 0, 0.3);
 }
 
 
