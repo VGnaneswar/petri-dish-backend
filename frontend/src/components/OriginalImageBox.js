@@ -9,7 +9,7 @@ const OriginalImageBox = ({ image }) => (
         <img src={image} alt="Uploaded Petri Dish" className="petri-img" />
       ) : (
         <div className="placeholder">
-          <span role="img" aria-label="image">🖼️</span>
+          
           <p>Your uploaded petri dish image will appear here.</p>
         </div>
       )}

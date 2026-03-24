@@ -9,15 +9,15 @@ const OutputImageBox = ({ outputImage, loading }) => (
           <img
             src="/Search.gif"
             alt="Loading..."
-            style={{ width: "80px", height: "80px" }}
+            style={{ width: "240px", height: "240px" }}
           />
-          <p>Processing image, please wait...</p>
+        
         </div>
       ) : outputImage ? (
         <img src={outputImage} alt="Output" className="petri-img" />
       ) : (
         <div className="placeholder">
-          <span role="img" aria-label="image">🖼️</span>
+          
           <p>The processed output image will appear here.</p>
         </div>
       )}
