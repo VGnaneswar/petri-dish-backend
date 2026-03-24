@@ -110,11 +110,6 @@ function App() {
       <div className="main-content">
         <UploadControls handleImageUpload={handleImageUpload} />
 
-        <div className="image-section-wrapper">
-          <OriginalImageBox image={image} />
-          <OutputImageBox outputImage={outputImage} loading={loading} />
-        </div>
-
         {/* 🔥 ANALYSIS RESULT */}
         <ColonyCountBox
           count={colonyCount}
@@ -122,6 +117,11 @@ function App() {
           bacteria={bacteria}
           confidence={confidence}
         />
+
+        <div className="image-section-wrapper">
+          <OriginalImageBox image={image} />
+          <OutputImageBox outputImage={outputImage} loading={loading} />
+        </div>
 
         {loading && <p className="loading">Processing image...</p>}
         {errorMsg && <p className="error">{errorMsg}</p>}
