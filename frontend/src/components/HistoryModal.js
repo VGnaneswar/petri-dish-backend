@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 
 function HistoryModal({ item, onClose }) {
 
@@ -24,7 +25,7 @@ function HistoryModal({ item, onClose }) {
       ? "Not Applicable"
       : item.colony_count ?? "—";
 
-  return (
+  return ReactDOM.createPortal(
     <div className="modal-overlay" onClick={onClose}>
       <div
         className="modal-content fullscreen-modal"
@@ -85,7 +86,8 @@ function HistoryModal({ item, onClose }) {
           <p><strong>Upload Time:</strong> {item.upload_time}</p>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
