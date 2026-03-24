@@ -1,12 +1,7 @@
 /* ===== ROOT THEME VARIABLES ===== */
-:root {
-  /* Define gradients globally so they are always available for transition */
-  --bg-light: linear-gradient(135deg, #e0f7ea 0%, #d1fae5 50%, #bbf7d0 100%);
-  --bg-dark: linear-gradient(135deg, #010b09 0%, #021a14 50%, #03221c 100%);
-}
-
 .container.light {
-  /* Glass and Text variables for Light Mode */
+  --bg: linear-gradient(135deg, #e0f7ea 0%, #d1fae5 50%, #bbf7d0 100%);
+  /* Increased opacity for matte effect */
   --glass: rgba(255, 255, 255, 0.6); 
   --text: #0f172a;
   --accent: #22c55e;
@@ -16,54 +11,30 @@
 }
 
 .container.dark {
-  /* Glass and Text variables for Dark Mode */
+  /* Use much deeper, almost black tones for richer dark mode */
+  --bg: linear-gradient(135deg, #010b09 0%, #021a14 50%, #03221c 100%);
+  /* Reduced opacity for more contrast against dark bg */
   --glass: rgba(0, 0, 0, 0.4);
   --text: #ecfdf5;
   --accent: #22c55e;
-  --border: rgba(255, 255, 255, 0.08);
-  --shadow: rgba(0, 0, 0, 0.6);
+  --border: rgba(255, 255, 255, 0.08); /* Thinner/fainter borders */
+  --shadow: rgba(0, 0, 0, 0.6);        /* Darker shadow for depth */
   --highlight: rgba(255, 255, 255, 0.05);
 }
 
 /* ===== GLOBAL ===== */
 .container {
-  /* Set base background to Light Gradient */
-  background: var(--bg-light); 
+  background: var(--bg);
   min-height: 100vh;
   color: var(--text);
   padding: 24px;
-  
-  /* Transition purely for text colors, borders, etc. Background is handled by pseudo-element */
-  transition: color 1.2s ease;
-  
+  /* Increased duration to 1.2s for a slow, blendy transition */
+  transition: background 1.2s cubic-bezier(0.4, 0, 0.2, 1), color 1.2s ease;
   position: relative;
   overflow-x: hidden;
-  isolation: isolate; /* Create new stacking context */
 }
 
-/* Ensure all direct children sit above the background pseudo-elements */
-.container > * {
-  position: relative;
-  z-index: 10;
-}
-
-/* 1. LAYER - DARK MODE OVERLAY (Fades in/out) */
-.container::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: var(--bg-dark);
-  opacity: 0;
-  z-index: 0; /* Above base light bg, below sheen */
-  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-  pointer-events: none;
-}
-
-.container.dark::after {
-  opacity: 1;
-}
-
-/* 2. LAYER - SHEEN / REFLECTION (Sits on top of dark overlay) */
+/* Static Reflection / sheen effect on the page background */
 .container::before {
   content: "";
   position: absolute;
@@ -74,9 +45,8 @@
   background: radial-gradient(circle at 50% 50%, var(--highlight), transparent 60%);
   opacity: 0.15;
   pointer-events: none;
-  z-index: 1; /* Above the dark overlay */
+  z-index: 0;
   transform: rotate(30deg);
-  transition: opacity 1.2s ease; /* Smoothly transition the sheen intensity */
 }
 
 .glass {
