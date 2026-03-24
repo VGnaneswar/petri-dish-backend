@@ -1,22 +1,22 @@
 /* ===== ROOT THEME VARIABLES ===== */
 .container.light {
-  /* Apple-inspired Light Theme */
-  --bg: linear-gradient(135deg, #f2f2f7, #ffffff);
-  --glass: rgba(255, 255, 255, 0.7);
+  /* Apple Glass Light */
+  --bg: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+  --glass: rgba(255, 255, 255, 0.65);
   --text: #1d1d1f;
   --accent: #34c759;
   --border: rgba(255, 255, 255, 0.6);
-  --shadow: rgba(0, 0, 0, 0.08);
+  --shadow: rgba(0, 0, 0, 0.05);
 }
 
 .container.dark {
-  /* Apple-inspired Dark Theme */
-  --bg: linear-gradient(135deg, #000000, #1c1c1e);
-  --glass: rgba(28, 28, 30, 0.7);
+  /* Apple Glass Dark */
+  --bg: linear-gradient(to bottom right, #000000, #1c1c1e);
+  --glass: rgba(30, 30, 30, 0.70);
   --text: #f5f5f7;
   --accent: #30d158;
-  --border: rgba(255, 255, 255, 0.15);
-  --shadow: rgba(0, 0, 0, 0.3);
+  --border: rgba(255, 255, 255, 0.12);
+  --shadow: rgba(0, 0, 0, 0.5);
 }
 
 
@@ -30,15 +30,15 @@
 }
 .glass {
   background: var(--glass);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
 
   border: 1px solid var(--border);
-  border-radius: 18px;
+  border-radius: 20px;
 
   box-shadow:
-    0 8px 32px var(--shadow),
-    inset 0 1px 0 rgba(255,255,255,0.25);
+    0 8px 32px 0 var(--shadow),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
 /* ===== HEADER ===== */
@@ -208,30 +208,31 @@
 
 .history-table {
   width: 100%;
-  border-spacing: 0 8px;
+  border-collapse: collapse;
+  margin-top: 10px;
 }
 
 .history-table th {
   color: var(--text);
   text-align: left;
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  opacity: 0.6;
-  padding: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize; /* Cleaner than uppercase */
+  opacity: 0.8;
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
 }
 
 .history-table td {
-  background: rgba(255,255,255,0.15);
-  backdrop-filter: blur(12px);
-  border-radius: 10px;
-  
-  font-weight: 500;
+  padding: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* very subtle separator */
+  color: var(--text);
+  font-weight: 400; /* Regular weight for cleaner text */
 }
 
 
 .history-table tr:hover td {
-  background: rgba(34, 197, 94, 0.08);
-  transform: scale(1.01);
+  background: rgba(255, 255, 255, 0.05); /* Very subtle hover */
 }
 
 .history-table td img {
