@@ -509,3 +509,95 @@
     transform: translateY(0);
   }
 }
+
+/* ===== RESPONSIVE / MOBILE ===== */
+@media (max-width: 1024px) {
+  .main-content {
+    grid-template-columns: 1fr; /* Stack sidebar and main content */
+    gap: 16px;
+  }
+
+  .image-section-wrapper {
+    grid-column: span 1; /* Reset span */
+  }
+
+  .history-section {
+    grid-column: span 1; /* Reset span */
+  }
+
+  /* Make header stack vertically if needed */
+  .header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  
+  .header h1 {
+    font-size: 1.4rem;
+  }
+  
+  /* Full width theme toggle */
+  .theme-toggle {
+    width: 100%;
+    margin-top: 8px;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.15); /* Slightly clearer for tap targets */
+  }
+
+  /* Adjust padding for mobile */
+  .container {
+    padding: 16px;
+  }
+
+  /* Stack image boxes vertically on smaller screens */
+  .image-section-wrapper {
+    grid-template-columns: 1fr;
+  }
+  
+  .image-box {
+    min-height: 200px;
+  }
+
+  /* History table horizontal scroll */
+  .history-section {
+    overflow-x: auto;
+  }
+  
+  .history-table {
+    min-width: 600px; /* Force scroll if table is wide */
+  }
+
+  /* Modal responsiveness */
+  .modal-content {
+    width: 95vw;
+    margin: 10px;
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 12px;
+  }
+  
+  .header img.logo {
+    width: 60px !important;
+    height: 60px !important;
+  }
+  
+  .header h1 {
+    font-size: 1.2rem;
+  }
+
+  .controls, .image-section, .colony-count-box, .history-section {
+    padding: 16px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr; /* 2 columns instead of 4 */
+  }
+
+  .upload-area {
+    padding: 20px;
+  }
+}
