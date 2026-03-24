@@ -55,7 +55,7 @@
   background: var(--bg-dark);
   opacity: 0;
   z-index: 0; /* Above base light bg, below sheen */
-  transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
 }
 
@@ -76,7 +76,7 @@
   pointer-events: none;
   z-index: 1; /* Above the dark overlay */
   transform: rotate(30deg);
-  transition: opacity 1.5s ease; /* Smoothly transition the sheen intensity */
+  transition: opacity 1.2s ease; /* Smoothly transition the sheen intensity */
 }
 
 .glass {
