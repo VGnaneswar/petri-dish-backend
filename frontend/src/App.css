@@ -11,14 +11,15 @@
 }
 
 .container.dark {
-  --bg: linear-gradient(135deg, #022c22 0%, #064e3b 50%, #065f46 100%);
-  /* Increased opacity for matte effect */
-  --glass: rgba(255, 255, 255, 0.12);
+  /* Use much deeper, almost black tones for richer dark mode */
+  --bg: linear-gradient(135deg, #010b09 0%, #021a14 50%, #03221c 100%);
+  /* Reduced opacity for more contrast against dark bg */
+  --glass: rgba(0, 0, 0, 0.4);
   --text: #ecfdf5;
   --accent: #22c55e;
-  --border: rgba(255, 255, 255, 0.2);
-  --shadow: rgba(0, 0, 0, 0.4);
-  --highlight: rgba(255, 255, 255, 0.1);
+  --border: rgba(255, 255, 255, 0.08); /* Thinner/fainter borders */
+  --shadow: rgba(0, 0, 0, 0.6);        /* Darker shadow for depth */
+  --highlight: rgba(255, 255, 255, 0.05);
 }
 
 /* ===== GLOBAL ===== */
@@ -27,7 +28,8 @@
   min-height: 100vh;
   color: var(--text);
   padding: 24px;
-  transition: all 0.4s ease;
+  /* Increased duration to 1.2s for a slow, blendy transition */
+  transition: background 1.2s cubic-bezier(0.4, 0, 0.2, 1), color 1.2s ease;
   position: relative;
   overflow-x: hidden;
 }
@@ -61,6 +63,7 @@
     0 2px 4px -1px var(--shadow),
     inset 0 0 20px rgba(255,255,255,0.05); /* Inner glow */
   
+  transition: background 1.5s cubic-bezier(0.2, 0.8, 0.2, 1), border 1.5s ease, box-shadow 1.5s ease;
   position: relative;
   overflow: hidden;
 }
@@ -75,6 +78,7 @@
   height: 40%;
   background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, rgba(255,255,255,0) 100%);
   pointer-events: none;
+  transition: opacity 1.5s ease;
 }
 
 /* ===== HEADER ===== */
@@ -96,6 +100,7 @@
   box-shadow: 0 8px 32px var(--shadow),
               inset 0 0 0 1px rgba(255,255,255,0.1);
   
+  transition: all 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
   position: relative;
   overflow: hidden;
 }
@@ -159,8 +164,16 @@
 
   box-shadow: 0 10px 40px -10px var(--shadow); /* Softer, deeper shadow */
 
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+  /* Mixed transitions: slow for theme changes, fast for hover interaction */
+  transition: 
+    background 1.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border 1.5s ease,
+    color 1.5s ease,
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), /* Bouncy hover */
+    box-shadow 0.4s ease;
+  
   overflow: hidden;
+  position: relative; /* Ensure z-index works */
 }
 
 /* Hover effect */
@@ -168,8 +181,9 @@
 .image-section:hover,
 .colony-count-box:hover,
 .history-section:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 20px 40px -10px var(--shadow);
+  transform: translateY(-6px) scale(1.005);
+  box-shadow: 0 25px 50px -12px var(--shadow);
+  border-color: rgba(255, 255, 255, 0.5); /* Highlight border on hover */
 }
 
 /* ===== IMAGE GRID ===== */
