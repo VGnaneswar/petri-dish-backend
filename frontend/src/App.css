@@ -309,7 +309,7 @@
 
 /* ===== MODAL CONTENT (FIXED + CLEAN) ===== */
 .modal-content {
-  
+  color: rgb(0, 0, 0);
   width: 500px;
   max-width: 90vw;
   max-height: 80vh;
