@@ -241,27 +241,23 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
+  background: rgba(0, 0, 0, 0.45);
 
   display: flex;
   align-items: center;
   justify-content: center;
 
-  padding: 20px;
-
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(6px);
-  max-width: fit-content;
   z-index: 9999;
+
+  backdrop-filter: blur(6px); /* 🔥 glass background */
 }
 
 /* ===== MODAL CONTENT (FIXED + CLEAN) ===== */
 .modal-content {
   position: relative;
 
-  width: 520px !important;
-  max-width: 520px !important;   /* 🔥 FORCE fixed width */
-  min-width: 400px;
-
+  width: 520px;
+  max-width: 92vw;
   max-height: 85vh;
 
   background: var(--card);
@@ -269,18 +265,16 @@
   padding: 20px;
 
   overflow-y: auto;
-  overflow-x: hidden;
 
   box-shadow: 
-    0 30px 90px rgba(0, 0, 0, 0.4),
-    0 10px 30px rgba(0, 0, 0, 0.2),
-    0 0 0 1px var(--border);
+    0 25px 80px rgba(0, 0, 0, 0.35),   /* deep shadow */
+    0 0 0 1px var(--border);           /* subtle border */
 
   animation: modalFadeIn 0.35s ease;
 
-  display: block !important;
+  transform-origin: center;
 
-  flex: none !important;   /* 🔥 CRITICAL FIX */
+  display: block !important;
 }
 /* ===== FULLSCREEN MODAL ===== */
 .fullscreen-modal {
@@ -304,7 +298,7 @@
   border: none;
   background: transparent;
   border-radius: 8px;
-  z-index: 10; /* 🔥 ensures always clickable */
+
   padding: 4px 8px;
   transition: 0.2s;
 }
@@ -314,21 +308,21 @@
 }
 
 .modal-content:hover {
-  transform: none; /* 🔥 prevent animation conflict */
+  transform: translateY(-2px) scale(1.01);
 }
+
 /* IMAGE */
 .modal-image-full {
   width: 100%;
-  max-width: 100%;
-  max-height: 300px;
+  max-height: 320px;
   object-fit: contain;
-  display: block;
+  border-radius: 10px;
+  margin: 10px 0;
 }
 
 /* DETAILS */
-.modal-details {
-  margin-top: 10px;
-  line-height: 1.5;
+.modal-details p {
+   margin-top: 10px;
 }
 
 /* ===== ANIMATIONS ===== */
