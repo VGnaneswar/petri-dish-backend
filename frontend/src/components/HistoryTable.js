@@ -57,7 +57,7 @@ function HistoryTable({ history }) {
                 <td>
                   <div style={{ fontSize: "0.9rem" }}>
                     <div>
-                      <strong>{item.type?.toUpperCase()}</strong>
+                      <span className="badge">{item.type?.toUpperCase()}</span>
                     </div>
 
                     <div>

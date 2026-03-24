@@ -1,22 +1,47 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 
-const UploadControls = ({ handleImageUpload }) => (
-  <section className="controls">
-    <h2>Upload Image</h2>
-    <p>Select a Petri dish image to process colonies.</p>
+const UploadControls = ({ handleImageUpload }) => {
+  const inputRef = useRef(null);
+  const [dragActive, setDragActive] = useState(false);
 
-    <label className="upload-label">
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setDragActive(false);
+
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleImageUpload({ target: { files: e.dataTransfer.files } });
+    }
+  };
+
+  return (
+    <section
+      className={`controls ${dragActive ? "drag-active" : ""}`}
+      onDragOver={(e) => {
+        e.preventDefault();
+        setDragActive(true);
+      }}
+      onDragLeave={() => setDragActive(false)}
+      onDrop={handleDrop}
+    >
+      <h2>Upload Image</h2>
+      <p>Drag & drop or click to upload a Petri dish image</p>
+
       <input
+        ref={inputRef}
         type="file"
         accept="image/*"
-        style={{ display: "none" }}
+        hidden
         onChange={handleImageUpload}
       />
-      <div className="upload-btn">
-        <span role="img" aria-label="upload">⤴️</span> Upload Image
+
+      <div
+        className="upload-btn"
+        onClick={() => inputRef.current.click()}
+      >
+        ⤴️ Upload Image
       </div>
-    </label>
-  </section>
-);
+    </section>
+  );
+};
 
 export default UploadControls;

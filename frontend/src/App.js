@@ -9,6 +9,7 @@ import OriginalImageBox from "./components/OriginalImageBox";
 import OutputImageBox from "./components/OutputImageBox";
 import HistoryTable from "./components/HistoryTable";
 import ColonyCountBox from "./components/ColonyCountBox";
+import AnalyticsPanel from "./components/AnalyticsPanel";
 
 function App() {
   const [image, setImage] = useState(null);
@@ -17,11 +18,12 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // 🔥 NEW STATES
   const [colonyCount, setColonyCount] = useState(null);
   const [plateType, setPlateType] = useState(null);
   const [bacteria, setBacteria] = useState(null);
   const [confidence, setConfidence] = useState(null);
+
+  const [darkMode, setDarkMode] = useState(true);
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -29,8 +31,7 @@ function App() {
         const res = await api.get("/history");
         setHistory(res.data);
       } catch (err) {
-        console.error("Error fetching history:", err);
-        setErrorMsg("Failed to fetch history from backend.");
+        setErrorMsg("Failed to fetch history.");
       }
     };
     fetchHistory();
@@ -39,12 +40,12 @@ function App() {
   const handleImageUpload = async (e) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+
       setImage(URL.createObjectURL(file));
       setLoading(true);
       setErrorMsg("");
       setOutputImage(null);
 
-      // 🔥 RESET EVERYTHING
       setColonyCount(null);
       setPlateType(null);
       setBacteria(null);
@@ -54,10 +55,7 @@ function App() {
       formData.append("file", file);
 
       try {
-        const res = await api.post("/ingest/petri-dish", formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-
+        const res = await api.post("/ingest/petri-dish", formData);
         const data = res.data;
 
         setOutputImage(data.output_image_url);
@@ -70,8 +68,7 @@ function App() {
         setHistory(historyRes.data);
 
       } catch (err) {
-        console.error("Upload error:", err);
-        setErrorMsg("Error uploading or processing image.");
+        setErrorMsg("Upload failed.");
       } finally {
         setLoading(false);
       }
@@ -79,15 +76,24 @@ function App() {
   };
 
   return (
-    <div className="container">
+    <div className={`container ${darkMode ? "dark" : "light"}`}>
+      
       <header className="header">
-        <img
-          src={require("./bacterial-colony-growth-on-agar.jpg")}
-          alt="ColonySight Logo"
-          className="logo"
-          style={{ width: "120px", height: "120px" }}
-        />
-        <h1>Detect Bacterial Colonies</h1>
+        <div className="header-left">
+          <img
+            src={require("./bacterial-colony-growth-on-agar.jpg")}
+            alt="Logo"
+            className="logo"
+          />
+          <h1>Detect Bacterial Colonies</h1>
+        </div>
+
+        <button
+          className="theme-toggle"
+          onClick={() => setDarkMode(!darkMode)}
+        >
+          {darkMode ? "🌙 Dark" : "☀️ Light"}
+        </button>
       </header>
 
       <div className="main-content">
@@ -98,7 +104,6 @@ function App() {
           <OutputImageBox outputImage={outputImage} loading={loading} />
         </div>
 
-        {/* 🔥 UPDATED PROPS */}
         <ColonyCountBox
           count={colonyCount}
           type={plateType}
@@ -108,6 +113,8 @@ function App() {
 
         {loading && <p className="loading">Processing image...</p>}
         {errorMsg && <p className="error">{errorMsg}</p>}
+
+        <AnalyticsPanel history={history} />
 
         <HistoryTable history={history} />
       </div>
