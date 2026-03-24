@@ -241,34 +241,41 @@
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.45);
 
   display: flex;
   align-items: center;
   justify-content: center;
 
   z-index: 9999;
+
+  backdrop-filter: blur(6px); /* 🔥 glass background */
 }
 
 /* ===== MODAL CONTENT (FIXED + CLEAN) ===== */
 .modal-content {
   position: relative;
 
-  width: 500px;           /* FIXED WIDTH */
-  max-width: 90vw;
-  max-height: 80vh;
+  width: 520px;
+  max-width: 92vw;
+  max-height: 85vh;
 
   background: var(--card);
-  border-radius: 16px;
+  border-radius: 18px;
   padding: 20px;
 
   overflow-y: auto;
 
-  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  box-shadow: 
+    0 25px 80px rgba(0, 0, 0, 0.35),   /* deep shadow */
+    0 0 0 1px var(--border);           /* subtle border */
 
-  display: block !important;   /* 🔥 STOP GRID STRETCH */
+  animation: modalFadeIn 0.35s ease;
+
+  transform-origin: center;
+
+  display: block !important;
 }
-
 /* ===== FULLSCREEN MODAL ===== */
 .fullscreen-modal {
   width: 90vw;
@@ -282,16 +289,26 @@
 /* CLOSE BUTTON */
 .modal-close {
   position: absolute;
-  top: 10px;
+  top: 12px;
   right: 14px;
-  font-size: 18px;
+
+  font-size: 20px;
   cursor: pointer;
+
   border: none;
   background: transparent;
+  border-radius: 8px;
+
+  padding: 4px 8px;
+  transition: 0.2s;
 }
 
 .modal-close:hover {
-  background: #e3e3e3;
+  background: rgba(0,0,0,0.08);
+}
+
+.modal-content:hover {
+  transform: translateY(-2px) scale(1.01);
 }
 
 /* IMAGE */
@@ -312,7 +329,7 @@
 @keyframes modalFadeIn {
   from {
     opacity: 0;
-    transform: translateY(20px) scale(0.92);
+    transform: translateY(40px) scale(0.9);
   }
   to {
     opacity: 1;
