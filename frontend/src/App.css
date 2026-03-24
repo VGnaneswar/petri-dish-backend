@@ -1,68 +1,95 @@
-body {
-  margin: 0;
-  font-family: 'Inter', sans-serif;
+/* ===== ROOT THEME VARIABLES ===== */
+.container.light {
+  --bg: linear-gradient(135deg, #f6fff9, #eafff3);
+  --card: rgba(255, 255, 255, 0.9);
+  --text: #0f172a;
+  --accent: #16a34a;
+  --border: rgba(22, 163, 74, 0.15);
 }
 
 .container.dark {
-  --bg: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-  --card: rgba(255,255,255,0.06);
-  --text: #e8fdf5;
-  --accent: #00ffcc;
+  --bg: linear-gradient(135deg, #0f1f17, #12281d);
+  --card: rgba(20, 40, 30, 0.8);
+  --text: #e6fff2;
+  --accent: #22c55e;
+  --border: rgba(34, 197, 94, 0.2);
 }
 
-.container.light {
-  --bg: #f4f7f9;
-  --card: #ffffff;
-  --text: #111;
-  --accent: #00a86b;
-}
-
+/* ===== GLOBAL ===== */
 .container {
   background: var(--bg);
   min-height: 100vh;
   color: var(--text);
   padding: 24px;
+  transition: all 0.3s ease;
 }
 
+/* ===== HEADER ===== */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 24px;
+
+  padding: 12px 18px;
+  border-radius: 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
 }
 
-.header-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.header h1 {
+  font-size: 1.8rem;
+  font-weight: 600;
 }
 
-.logo {
-  width: 100px;
-  border-radius: 50%;
-}
-
+/* ===== THEME BUTTON ===== */
 .theme-toggle {
-  padding: 10px;
-  border-radius: 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text);
   cursor: pointer;
+  transition: all 0.25s ease;
 }
 
+.theme-toggle:hover {
+  background: var(--accent);
+  color: white;
+}
+
+/* ===== GRID LAYOUT ===== */
 .main-content {
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 280px 1fr;
   gap: 24px;
 }
 
+/* ===== CARD STYLE ===== */
 .controls,
 .image-section,
 .colony-count-box,
-.history-section,
-.analytics-panel {
+.history-section {
   background: var(--card);
   padding: 20px;
-  border-radius: 16px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  transition: all 0.25s ease;
+  animation: fadeInUp 0.4s ease;
 }
 
+/* Hover lift */
+.controls:hover,
+.image-section:hover,
+.colony-count-box:hover,
+.history-section:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* ===== IMAGE GRID ===== */
 .image-section-wrapper {
   grid-column: span 2;
   display: grid;
@@ -70,26 +97,207 @@ body {
   gap: 24px;
 }
 
-.upload-btn {
-  background: var(--accent);
-  padding: 12px;
-  border-radius: 10px;
+/* ===== IMAGE SECTION FRAME ===== */
+.image-section {
+  position: relative;
+}
+
+.image-section::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  pointer-events: none;
+}
+
+/* ===== IMAGE BOX ===== */
+.image-box {
+  border: 2px dashed var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  text-align: center;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.image-box:hover {
+  border-color: var(--accent);
+}
+
+/* ===== IMAGES ===== */
+.petri-img {
+  max-width: 100%;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.petri-img:hover {
+  transform: scale(1.03);
+}
+
+/* ===== PLACEHOLDER ===== */
+.placeholder {
+  opacity: 0.7;
+  font-size: 0.95rem;
+}
+
+/* ===== UPLOAD AREA ===== */
+.upload-area {
+  border: 2px dashed var(--border);
+  border-radius: 14px;
+  padding: 30px;
+  text-align: center;
+  transition: all 0.3s ease;
   cursor: pointer;
 }
 
-.drag-active {
-  border: 2px dashed var(--accent);
+.upload-area:hover {
+  border-color: var(--accent);
+  background: rgba(34, 197, 94, 0.05);
 }
 
-.analytics-grid {
+.upload-icon {
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.upload-text {
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+.drag-active .upload-area {
+  border-color: var(--accent);
+  background: rgba(34, 197, 94, 0.12);
+  transform: scale(1.02);
+}
+
+/* ===== TEXT STATES ===== */
+.loading {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.error {
+  color: #ef4444;
+  font-weight: 500;
+}
+
+/* ===== HISTORY TABLE ===== */
+.history-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 8px;
+  margin-top: 12px;
+}
+
+.history-table th {
+  text-align: left;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  opacity: 0.6;
+  padding: 8px;
+}
+
+.history-table td {
+  background: var(--card);
+  padding: 12px;
+}
+
+.history-table tr {
+  transition: all 0.2s ease;
+}
+
+.history-table tr:hover td {
+  background: rgba(34, 197, 94, 0.08);
+  transform: scale(1.01);
+}
+
+/* ===== STATS GRID ===== */
+.stats-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
+  margin-top: 12px;
 }
 
 .stat-card {
-  text-align: center;
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid var(--border);
+  border-radius: 14px;
   padding: 16px;
-  border-radius: 12px;
-  background: rgba(0,255,150,0.1);
+  text-align: center;
+  transition: all 0.25s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-3px);
+  background: rgba(34, 197, 94, 0.15);
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  opacity: 0.7;
+  margin-bottom: 4px;
+}
+
+/* ===== MODAL ===== */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+  background: var(--card);
+  padding: 20px;
+  border-radius: 16px;
+  width: 600px;
+  max-width: 95%;
+  animation: slideUp 0.3s ease;
+}
+
+.modal-close {
+  float: right;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

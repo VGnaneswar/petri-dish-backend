@@ -1,3 +1,5 @@
+
+
 import React, { useState } from "react";
 import HistoryModal from "./HistoryModal";
 
@@ -57,7 +59,7 @@ function HistoryTable({ history }) {
                 <td>
                   <div style={{ fontSize: "0.9rem" }}>
                     <div>
-                      <span className="badge">{item.type?.toUpperCase()}</span>
+                      <strong>{item.type?.toUpperCase()}</strong>
                     </div>
 
                     <div>
