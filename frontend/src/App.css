@@ -64,6 +64,7 @@
   display: grid;
   grid-template-columns: 280px 1fr;
   gap: 24px;
+  align-items: start;
 }
 
 /* ===== CARD STYLE ===== */
@@ -187,6 +188,11 @@
   font-weight: 500;
 }
 
+/* ===== HISTORY SECTION FULL WIDTH ===== */
+.history-section {
+  grid-column: span 2;
+}
+
 /* ===== HISTORY TABLE ===== */
 .history-table {
   width: 100%;
@@ -217,6 +223,15 @@
   transform: scale(1.01);
 }
 
+.history-table td img {
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+}
+
+.history-table td img:hover {
+  transform: scale(1.1);
+}
+
 /* ===== STATS GRID ===== */
 .stats-grid {
   display: grid;
@@ -245,6 +260,23 @@
   margin-bottom: 4px;
 }
 
+/* ===== DOWNLOAD BUTTON ===== */
+.download-btn {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: none;
+  background: var(--accent);
+  color: white;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.download-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(34, 197, 94, 0.3);
+}
+
 /* ===== MODAL ===== */
 .modal-overlay {
   position: fixed;
@@ -252,20 +284,21 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0,0,0,0.4);
   display: flex;
   align-items: center;
   justify-content: center;
-  animation: fadeIn 0.3s ease;
 }
 
 .modal-content {
   background: var(--card);
   padding: 20px;
   border-radius: 16px;
-  width: 600px;
-  max-width: 95%;
-  animation: slideUp 0.3s ease;
+  width: 500px;
+  max-width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  animation: slideUp 0.25s ease;
 }
 
 .modal-close {
@@ -274,12 +307,15 @@
   font-size: 18px;
 }
 
-/* ===== ANIMATIONS ===== */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.modal-image {
+  max-height: 300px;
+  width: 100%;
+  object-fit: contain;
+  border-radius: 10px;
+  margin-top: 10px;
 }
 
+/* ===== ANIMATIONS ===== */
 @keyframes slideUp {
   from {
     transform: translateY(20px);

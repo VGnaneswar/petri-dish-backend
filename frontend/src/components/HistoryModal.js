@@ -16,6 +16,18 @@ function HistoryModal({ item, onClose }) {
     });
   };
 
+  // ✅ DOWNLOAD FUNCTION
+  const handleDownload = () => {
+    if (!item.output_image_url) return;
+
+    const link = document.createElement("a");
+    link.href = item.output_image_url;
+    link.download = item.filename || "detected-image.png";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const formattedConfidence =
     item.confidence !== null && item.confidence !== undefined
       ? (item.confidence * 100).toFixed(2) + "%"
@@ -32,12 +44,14 @@ function HistoryModal({ item, onClose }) {
         className="modal-content"
         onClick={(e) => e.stopPropagation()}
       >
+        {/* CLOSE BUTTON */}
         <button className="modal-close" onClick={onClose}>
           ✕
         </button>
 
         <h2>Detection Details</h2>
 
+        {/* IMAGE + BOXES */}
         {item.output_image_url && (
           <div style={{ position: "relative", width: "100%" }}>
             <img
@@ -46,9 +60,14 @@ function HistoryModal({ item, onClose }) {
               alt="Detected Output"
               className="modal-image"
               onLoad={handleImageLoad}
+              style={{
+                width: "100%",
+                borderRadius: "10px",
+                marginTop: "10px",
+              }}
             />
 
-            {/* Draw boxes only for spread or mixed */}
+            {/* DRAW BOXES */}
             {dims &&
               item.type !== "streak" &&
               item.detections?.map((det, idx) => {
@@ -79,7 +98,18 @@ function HistoryModal({ item, onClose }) {
           </div>
         )}
 
-        <div className="modal-details">
+        {/* ✅ DOWNLOAD BUTTON */}
+        {item.output_image_url && (
+          <button
+            className="download-btn"
+            onClick={handleDownload}
+          >
+            ⬇ Download Image
+          </button>
+        )}
+
+        {/* DETAILS */}
+        <div className="modal-details" style={{ marginTop: "15px" }}>
           <p><strong>Filename:</strong> {item.filename}</p>
 
           <p>
