@@ -39,6 +39,17 @@ function App() {
     fetchHistory();
   }, []);
 
+  const getFriendlyUploadError = (err) => {
+    const detail = err?.response?.data?.detail;
+    const message = typeof detail === "string" ? detail : "";
+
+    if (message.includes("File size too large")) {
+      return "File is too large. Please upload an image below 10 MB.";
+    }
+
+    return detail || "Error uploading or processing image.";
+  };
+
   const handleImageUpload = async (e) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
@@ -74,9 +85,7 @@ function App() {
 
       } catch (err) {
         console.error("Upload error:", err);
-        setErrorMsg(
-          err?.response?.data?.detail || "Error uploading or processing image."
-        );
+        setErrorMsg(getFriendlyUploadError(err));
       } finally {
         setLoading(false);
       }
