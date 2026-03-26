@@ -26,9 +26,17 @@
 }
 
 /* ===== GLOBAL ===== */
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden; /* Prevent horizontal scrollbar */
+}
+
 .container {
-  /* Set base background to Light Gradient */
+  /* Set base background to Light Gradient (FIXED to prevent scroll glitch) */
   background: var(--bg-light); 
+  background-attachment: fixed; /* Keeps background static */
   min-height: 100vh;
   color: var(--text);
   padding: 24px;
@@ -50,11 +58,11 @@
 /* 1. LAYER - DARK MODE OVERLAY (Fades in/out) */
 .container::after {
   content: "";
-  position: absolute;
+  position: fixed; /* FIXED positioning covers the viewport */
   inset: 0;
   background: var(--bg-dark);
   opacity: 0;
-  z-index: 0; /* Above base light bg, below sheen */
+  z-index: -1; /* Behind content */
   transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
 }
@@ -66,7 +74,7 @@
 /* 2. LAYER - SHEEN / REFLECTION (Sits on top of dark overlay) */
 .container::before {
   content: "";
-  position: absolute;
+  position: fixed; /* FIXED positioning */
   top: -50%;
   left: -50%;
   width: 200%;
@@ -74,7 +82,7 @@
   background: radial-gradient(circle at 50% 50%, var(--highlight), transparent 60%);
   opacity: 0.15;
   pointer-events: none;
-  z-index: 1; /* Above the dark overlay */
+  z-index: 0; /* Above the dark overlay */
   transform: rotate(30deg);
   transition: opacity 1.5s ease; /* Smoothly transition the sheen intensity */
 }
@@ -224,8 +232,16 @@
   gap: 24px;
 }
 
+/* Make the image section a flex container so the inner box can grow */
+.image-section {
+  display: flex;
+  flex-direction: column;
+}
+
 /* ===== IMAGE BOX ===== */
 .image-box {
+  flex: 1; /* Grow to fill the available space in the card */
+  width: 100%; /* Ensure full width */
   background: rgba(255, 255, 255, 0.05); /* Very subtle fill */
   border: 2px dashed rgba(255,255,255,0.2);
   border-radius: 20px;
@@ -361,30 +377,49 @@
 /* ===== STATS ===== */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin-top: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); /* Better responsiveness */
+  gap: 16px;
+  margin-top: 20px;
+  align-items: center; /* Vertically center items in row */
+}
+
+.colony-count-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Vertically center the content */
 }
 
 .stat-card {
   background: rgba(255,255,255,0.15);
   backdrop-filter: blur(12px);
 
-  border-radius: 12px;
-  padding: 12px;
+  border-radius: 16px;
+  padding: 20px;
 
   border: 1px solid var(--border);
+  text-align: center; /* Center text */
 
   transition: 0.3s;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* Fill grid cell height */
 }
 .stat-card h3 {
   color: var(--text);
   font-weight: 700;
+  font-size: 1.2rem;
+  margin: 8px 0 0 0;
 }
 
 .stat-label {
   color: var(--text);
-  opacity: 0.7;
+  opacity: 0.8;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
 }
 .stat-card:hover {
   background: rgba(34, 197, 94, 0.2);

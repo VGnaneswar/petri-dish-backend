@@ -15,6 +15,21 @@ function HistoryModal({ item, onClose }) {
     document.body.removeChild(link);
   };
 
+  const formatTime = (isoString) => {
+    if (!isoString) return "—";
+    const date = new Date(isoString);
+    return date.toLocaleString("en-IN", {
+      timeZone: "Asia/Kolkata",
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true,
+    });
+  };
+
   const formattedConfidence =
     item.confidence !== null && item.confidence !== undefined
       ? (item.confidence * 100).toFixed(2) + "%"
@@ -83,7 +98,7 @@ function HistoryModal({ item, onClose }) {
             {colonies}
           </p>
 
-          <p><strong>Upload Time:</strong> {item.upload_time}</p>
+          <p><strong>Upload Time:</strong> {formatTime(item.upload_time)}</p>
         </div>
       </div>
     </div>,

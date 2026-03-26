@@ -11,6 +11,21 @@ function HistoryTable({ history }) {
       ? (conf * 100).toFixed(1) + "%"
       : "—";
 
+  const formatTime = (isoString) => {
+    if (!isoString) return "—";
+    const date = new Date(isoString);
+    return date.toLocaleString("en-IN", {
+      timeZone: "Asia/Kolkata",
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true,
+    });
+  };
+
   return (
     <div className="history-section">
       <h2>Detection History</h2>
@@ -63,11 +78,11 @@ function HistoryTable({ history }) {
                     </div>
 
                     <div>
-                      {item.type === "streak"
-                        ? item.bacteria || "N/A"
-                        : item.type === "mixed"
-                        ? `${item.colony_count} colonies`
-                        : `${item.colony_count} colonies`}
+                      {item.type === "streak" ? (
+                        item.bacteria || "N/A"
+                      ) : (
+                        `${item.colony_count} colonies`
+                      )}
                     </div>
 
                     <div style={{ color: "#666" }}>
@@ -76,7 +91,7 @@ function HistoryTable({ history }) {
                   </div>
                 </td>
 
-                <td>{item.upload_time}</td>
+                <td>{formatTime(item.upload_time)}</td>
               </tr>
             ))}
           </tbody>
