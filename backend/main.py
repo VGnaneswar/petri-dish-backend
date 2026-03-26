@@ -103,10 +103,19 @@ def get_all_images(db: Session = Depends(get_db)):
         history_data = []
 
         for img in images:
+            # Ensure proper UTC formatting for naive datetimes
+            upload_time_str = "N/A"
+            if img.upload_time:
+                # If naive, assume UTC and append Z to indicate Zulu/UTC time
+                if img.upload_time.tzinfo is None:
+                    upload_time_str = img.upload_time.isoformat() + "Z"
+                else:
+                    upload_time_str = img.upload_time.isoformat()
+
             history_data.append({
                 "id": img.id,
                 "filename": img.filename or "Unknown",
-                "upload_time": img.upload_time.isoformat() if img.upload_time else "N/A",
+                "upload_time": upload_time_str,
                 "colony_count": img.colony_count,
                 "output_image_url": img.output_image_url,
                 "folder_path": img.folder_path,
