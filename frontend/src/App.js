@@ -74,7 +74,9 @@ function App() {
 
       } catch (err) {
         console.error("Upload error:", err);
-        setErrorMsg("Error uploading or processing image.");
+        setErrorMsg(
+          err?.response?.data?.detail || "Error uploading or processing image."
+        );
       } finally {
         setLoading(false);
       }

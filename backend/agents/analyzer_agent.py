@@ -12,6 +12,15 @@ from backend.database.models import ImageRecord, DetectionRecord
 HF_YOLO_URL = "https://gnaneswr-petri-dish-yolo.hf.space/predict"
 
 
+def _friendly_error_message(error):
+    message = str(error)
+
+    if "File size too large" in message:
+        return "File is too large. Please upload an image below 10 MB."
+
+    return f"Analyze image failed: {message}"
+
+
 def analyze_image(img_path: str, folder_name: str, filename: str):
     db = SessionLocal()
 
@@ -116,7 +125,7 @@ def analyze_image(img_path: str, folder_name: str, filename: str):
         db.rollback()
         raise HTTPException(
             status_code=500,
-            detail=f"Analyze image failed: {str(e)}"
+            detail=_friendly_error_message(e)
         )
 
     finally:
