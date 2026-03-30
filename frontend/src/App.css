@@ -97,6 +97,8 @@ body, html {
   transition: color 1.2s ease;
   
   isolation: isolate; /* Stacking context for pseudo-elements */
+
+  animation: pageFadeIn 0.7s ease-out;
 }
 
 /* Ensure all direct children sit clearly above the background layers */
@@ -135,6 +137,7 @@ body, html {
   z-index: -1; /* Sit above dark overlay, below content */
   transform: rotate(30deg);
   transition: opacity 1.5s ease;
+  animation: sheenFloat 16s ease-in-out infinite;
 }
 
 .glass {
@@ -191,6 +194,7 @@ body, html {
   transition: all 1.5s cubic-bezier(0.2, 0.8, 0.2, 1);
   position: relative;
   overflow: hidden;
+  animation: softRise 0.55s ease-out both;
 }
 
 .header::after {
@@ -232,6 +236,10 @@ body, html {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
 }
+
+.theme-toggle:active {
+  transform: translateY(0) scale(0.98);
+}
 /* ===== GRID ===== */
 .main-content {
   display: grid;
@@ -262,6 +270,23 @@ body, html {
   
   overflow: hidden;
   position: relative; /* Ensure z-index works */
+  animation: softRise 0.6s ease-out both;
+}
+
+.controls {
+  animation-delay: 0.06s;
+}
+
+.colony-count-box {
+  animation-delay: 0.12s;
+}
+
+.image-section {
+  animation-delay: 0.16s;
+}
+
+.history-section {
+  animation-delay: 0.2s;
 }
 
 /* Hover effect */
@@ -307,6 +332,18 @@ body, html {
   overflow: hidden;
 }
 
+.image-box::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -130%;
+  width: 70%;
+  height: 100%;
+  background: linear-gradient(110deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+  pointer-events: none;
+  animation: softSweep 6.5s ease-in-out infinite;
+}
+
 .image-box:hover {
   border-color: var(--accent);
   /* background removed on hover too */
@@ -320,6 +357,7 @@ body, html {
   border-radius: 16px;
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  animation: imageReveal 0.45s ease-out both;
 }
 
 .petri-img:hover {
@@ -455,6 +493,23 @@ body, html {
   justify-content: center;
   align-items: center;
   height: 100%; /* Fill grid cell height */
+  animation: softRise 0.5s ease-out both;
+}
+
+.stat-card:nth-child(1) {
+  animation-delay: 0.04s;
+}
+
+.stat-card:nth-child(2) {
+  animation-delay: 0.08s;
+}
+
+.stat-card:nth-child(3) {
+  animation-delay: 0.12s;
+}
+
+.stat-card:nth-child(4) {
+  animation-delay: 0.16s;
 }
 .stat-card h3 {
   color: var(--text);
@@ -584,6 +639,66 @@ body, html {
 }
 
 /* ===== ANIMATIONS ===== */
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes softRise {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.995);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes imageReveal {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes softSweep {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(360%);
+    opacity: 0;
+  }
+}
+
+@keyframes sheenFloat {
+  0% {
+    transform: rotate(30deg) translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: rotate(29deg) translate3d(0, -1.5%, 0) scale(1.02);
+  }
+  100% {
+    transform: rotate(30deg) translate3d(0, 0, 0) scale(1);
+  }
+}
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -592,6 +707,32 @@ body, html {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .container,
+  .container::before,
+  .header,
+  .controls,
+  .colony-count-box,
+  .image-section,
+  .history-section,
+  .stat-card,
+  .petri-img,
+  .image-box::before {
+    animation: none !important;
+  }
+
+  .theme-toggle,
+  .controls,
+  .image-section,
+  .colony-count-box,
+  .history-section,
+  .upload-area,
+  .download-btn,
+  .petri-img {
+    transition: none !important;
   }
 }
 
