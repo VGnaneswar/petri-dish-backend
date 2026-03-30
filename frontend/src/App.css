@@ -1,8 +1,26 @@
 /* ===== ROOT THEME VARIABLES ===== */
 :root {
   /* Define gradients globally so they are always available for transition */
-  --bg-light: linear-gradient(120deg, #effff5 0%, #d9fbe7 35%, #c1f3d8 70%, #abebca 100%);
-  --bg-dark: linear-gradient(120deg, #020c09 0%, #041a14 35%, #072a20 70%, #0a382a 100%);
+  --bg-light: linear-gradient(
+    120deg,
+    #f6fff9 0%,
+    #e8fdef 18%,
+    #d9fbe7 36%,
+    #cbf8df 52%,
+    #b9f1d3 68%,
+    #a6e9c5 84%,
+    #93e0b8 100%
+  );
+  --bg-dark: linear-gradient(
+    120deg,
+    #010806 0%,
+    #02130f 16%,
+    #041e18 32%,
+    #052923 48%,
+    #07342c 64%,
+    #094037 82%,
+    #0b4b41 100%
+  );
 }
 
 .container.light {
@@ -88,7 +106,7 @@ body, html {
 
   /* Theme Background (Light Mode Base) */
   background: var(--bg-light);
-  background-size: 220% 220%;
+  background-size: 140% 140%;
   background-position: 0% 50%;
   background-attachment: fixed;
   
@@ -115,7 +133,7 @@ body, html {
   position: fixed; /* Stick to screen, don't scroll with content */
   inset: 0;
   background: var(--bg-dark);
-  background-size: 220% 220%;
+  background-size: 140% 140%;
   background-position: 100% 50%;
   opacity: 0;
   z-index: -2; /* Sit right on top of the light background */
