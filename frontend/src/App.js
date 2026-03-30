@@ -25,15 +25,6 @@ function App() {
 
   // ✅ THEME STATE (NEW)
   const [theme, setTheme] = useState("light");
-  const [spriteCycle, setSpriteCycle] = useState(0);
-
-  useEffect(() => {
-    const intervalId = window.setInterval(() => {
-      setSpriteCycle((prev) => prev + 1);
-    }, 9000);
-
-    return () => window.clearInterval(intervalId);
-  }, []);
 
   const floatingSprites = useMemo(() => {
     const gifPool = [
@@ -47,9 +38,15 @@ function App() {
       const dx = random(22, 48) * (Math.random() > 0.5 ? 1 : -1);
       const dy = random(18, 42) * (Math.random() > 0.5 ? 1 : -1);
       const rot = random(4, 12) * (Math.random() > 0.5 ? 1 : -1);
+      const dx2 = dx * -0.55;
+      const dy2 = dy * 0.55;
+      const rot2 = rot * -0.45;
+      const dx3 = dx * 0.28;
+      const dy3 = dy * -0.25;
+      const rot3 = rot * 0.2;
 
       return {
-        id: `bg-gif-${spriteCycle}-${i}`,
+        id: `bg-gif-${i}`,
         src: gifPool[Math.floor(Math.random() * gifPool.length)],
         style: {
           "--x": `${random(6, 90).toFixed(1)}%`,
@@ -60,10 +57,16 @@ function App() {
           "--dx": `${dx.toFixed(0)}px`,
           "--dy": `${dy.toFixed(0)}px`,
           "--rot": `${rot.toFixed(0)}deg`,
+          "--dx2": `${dx2.toFixed(0)}px`,
+          "--dy2": `${dy2.toFixed(0)}px`,
+          "--rot2": `${rot2.toFixed(1)}deg`,
+          "--dx3": `${dx3.toFixed(0)}px`,
+          "--dy3": `${dy3.toFixed(0)}px`,
+          "--rot3": `${rot3.toFixed(1)}deg`,
         },
       };
     });
-  }, [spriteCycle]);
+  }, []);
 
   useEffect(() => {
     const fetchHistory = async () => {
