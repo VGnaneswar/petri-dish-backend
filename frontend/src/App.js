@@ -29,6 +29,7 @@ function App() {
   const random = (min, max) => Math.random() * (max - min) + min;
 
   const createFloatingSprites = (prevSprites = [], cycle = 0) => {
+    const spriteCount = 10;
     const gifPool = [
       "/Bacterium,_Single_cell_organism_20260330172004.gif",
       "/bacterium_20260330172046.gif",
@@ -50,7 +51,7 @@ function App() {
       return nextValue;
     };
 
-    return Array.from({ length: 10 }, (_, i) => {
+    return Array.from({ length: spriteCount }, (_, i) => {
       const previous = prevSprites[i];
       const x = pickNonRepeating(6, 90, previous?.x, 10);
       const y = pickNonRepeating(8, 84, previous?.y, 10);
