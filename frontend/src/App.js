@@ -94,6 +94,8 @@ function App() {
 
   return (
     <div className={`container ${theme}`}>
+      <div className="colony-bg" aria-hidden="true" />
+
       <header className="header">
         
         {/* LEFT SIDE */}
