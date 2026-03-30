@@ -1,6 +1,6 @@
 // frontend/src/App.js
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import api from "./axiosMiddleware";
 import "./App.css";
 
@@ -25,6 +25,36 @@ function App() {
 
   // ✅ THEME STATE (NEW)
   const [theme, setTheme] = useState("light");
+
+  const floatingSprites = useMemo(() => {
+    const gifPool = [
+      "/Bacterium,_Single_cell_organism_20260330172004.gif",
+      "/bacterium_20260330172046.gif",
+    ];
+
+    const random = (min, max) => Math.random() * (max - min) + min;
+
+    return Array.from({ length: 6 }, (_, i) => {
+      const dx = random(22, 48) * (Math.random() > 0.5 ? 1 : -1);
+      const dy = random(18, 42) * (Math.random() > 0.5 ? 1 : -1);
+      const rot = random(4, 12) * (Math.random() > 0.5 ? 1 : -1);
+
+      return {
+        id: `bg-gif-${i}`,
+        src: gifPool[Math.floor(Math.random() * gifPool.length)],
+        style: {
+          "--x": `${random(6, 90).toFixed(1)}%`,
+          "--y": `${random(8, 84).toFixed(1)}%`,
+          "--size": `${random(56, 86).toFixed(0)}px`,
+          "--dur": `${random(10, 16).toFixed(1)}s`,
+          "--delay": `${(i * 0.24).toFixed(2)}s`,
+          "--dx": `${dx.toFixed(0)}px`,
+          "--dy": `${dy.toFixed(0)}px`,
+          "--rot": `${rot.toFixed(0)}deg`,
+        },
+      };
+    });
+  }, []);
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -95,30 +125,15 @@ function App() {
   return (
     <div className={`container ${theme}`}>
       <div className="background-gif-layer" aria-hidden="true">
-        <img
-          src="/Search.gif"
-          alt=""
-          className="bg-gif gif-one"
-          style={{ "--x": "8%", "--y": "16%", "--size": "70px", "--dur": "11s", "--delay": "0s" }}
-        />
-        <img
-          src="/Search.gif"
-          alt=""
-          className="bg-gif gif-two"
-          style={{ "--x": "84%", "--y": "22%", "--size": "62px", "--dur": "13s", "--delay": "0.4s" }}
-        />
-        <img
-          src="/Search.gif"
-          alt=""
-          className="bg-gif gif-three"
-          style={{ "--x": "16%", "--y": "76%", "--size": "76px", "--dur": "15s", "--delay": "0.8s" }}
-        />
-        <img
-          src="/Search.gif"
-          alt=""
-          className="bg-gif gif-four"
-          style={{ "--x": "78%", "--y": "72%", "--size": "68px", "--dur": "12s", "--delay": "1.1s" }}
-        />
+        {floatingSprites.map((sprite) => (
+          <img
+            key={sprite.id}
+            src={sprite.src}
+            alt=""
+            className="bg-gif"
+            style={sprite.style}
+          />
+        ))}
       </div>
 
       <header className="header">
