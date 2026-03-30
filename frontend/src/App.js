@@ -50,7 +50,7 @@ function App() {
       return nextValue;
     };
 
-    return Array.from({ length: 6 }, (_, i) => {
+    return Array.from({ length: 10 }, (_, i) => {
       const previous = prevSprites[i];
       const x = pickNonRepeating(6, 90, previous?.x, 10);
       const y = pickNonRepeating(8, 84, previous?.y, 10);
