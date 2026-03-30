@@ -94,7 +94,32 @@ function App() {
 
   return (
     <div className={`container ${theme}`}>
-      <div className="colony-bg" aria-hidden="true" />
+      <div className="background-gif-layer" aria-hidden="true">
+        <img
+          src="/Search.gif"
+          alt=""
+          className="bg-gif gif-one"
+          style={{ "--x": "8%", "--y": "16%", "--size": "70px", "--dur": "11s", "--delay": "0s" }}
+        />
+        <img
+          src="/Search.gif"
+          alt=""
+          className="bg-gif gif-two"
+          style={{ "--x": "84%", "--y": "22%", "--size": "62px", "--dur": "13s", "--delay": "0.4s" }}
+        />
+        <img
+          src="/Search.gif"
+          alt=""
+          className="bg-gif gif-three"
+          style={{ "--x": "16%", "--y": "76%", "--size": "76px", "--dur": "15s", "--delay": "0.8s" }}
+        />
+        <img
+          src="/Search.gif"
+          alt=""
+          className="bg-gif gif-four"
+          style={{ "--x": "78%", "--y": "72%", "--size": "68px", "--dur": "12s", "--delay": "1.1s" }}
+        />
+      </div>
 
       <header className="header">
         

@@ -122,64 +122,56 @@ body, html {
 }
 
 /* Ensure all direct children sit clearly above the background layers */
-.container > *:not(.colony-bg) {
+.container > * {
   position: relative;
   z-index: 10;
 }
 
-/* Dedicated moving colony dots layer (background only) */
-.colony-bg {
+.background-gif-layer {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  z-index: 0;
+  z-index: 1;
   overflow: hidden;
 }
 
-.colony-bg::before,
-.colony-bg::after {
-  content: "";
+.bg-gif {
   position: absolute;
-  inset: -12%;
-  pointer-events: none;
-  will-change: transform;
+  left: var(--x);
+  top: var(--y);
+  width: var(--size);
+  height: var(--size);
+  opacity: 0.28;
+  filter: saturate(1.25) brightness(1.05);
+  transform: translate3d(0, 0, 0) scale(0.65);
+  will-change: transform, opacity;
+  animation:
+    bgPopIn 900ms cubic-bezier(0.2, 0.95, 0.3, 1.15) var(--delay) both,
+    bgDriftLoop var(--dur) ease-in-out calc(var(--delay) + 0.9s) infinite;
 }
 
-.colony-bg::before {
-  opacity: 0.45;
-  filter: blur(0.3px);
-  background-image:
-    radial-gradient(circle at 6% 14%, rgba(22, 163, 74, 0.30) 0 7px, transparent 9px),
-    radial-gradient(circle at 18% 32%, rgba(21, 128, 61, 0.25) 0 9px, transparent 12px),
-    radial-gradient(circle at 29% 72%, rgba(34, 197, 94, 0.30) 0 8px, transparent 11px),
-    radial-gradient(circle at 42% 24%, rgba(16, 185, 129, 0.24) 0 7px, transparent 10px),
-    radial-gradient(circle at 57% 60%, rgba(34, 197, 94, 0.27) 0 10px, transparent 13px),
-    radial-gradient(circle at 73% 37%, rgba(22, 163, 74, 0.29) 0 8px, transparent 11px),
-    radial-gradient(circle at 84% 77%, rgba(74, 222, 128, 0.24) 0 9px, transparent 12px),
-    radial-gradient(circle at 92% 18%, rgba(21, 128, 61, 0.28) 0 7px, transparent 10px);
-  animation: colonyFloatA 18s ease-in-out infinite alternate;
+.gif-one {
+  --dx: 36px;
+  --dy: -28px;
+  --rot: 9deg;
 }
 
-.colony-bg::after {
-  opacity: 0.35;
-  filter: blur(0.8px);
-  background-image:
-    radial-gradient(circle at 12% 58%, rgba(34, 197, 94, 0.26) 0 11px, transparent 14px),
-    radial-gradient(circle at 24% 16%, rgba(22, 163, 74, 0.24) 0 8px, transparent 11px),
-    radial-gradient(circle at 38% 42%, rgba(134, 239, 172, 0.22) 0 10px, transparent 13px),
-    radial-gradient(circle at 53% 80%, rgba(16, 185, 129, 0.24) 0 9px, transparent 12px),
-    radial-gradient(circle at 68% 21%, rgba(34, 197, 94, 0.22) 0 10px, transparent 13px),
-    radial-gradient(circle at 79% 55%, rgba(21, 128, 61, 0.24) 0 8px, transparent 11px),
-    radial-gradient(circle at 88% 35%, rgba(74, 222, 128, 0.20) 0 9px, transparent 12px);
-  animation: colonyFloatB 24s ease-in-out infinite alternate;
+.gif-two {
+  --dx: -42px;
+  --dy: 32px;
+  --rot: -11deg;
 }
 
-.container.dark .colony-bg::before {
-  opacity: 0.32;
+.gif-three {
+  --dx: 30px;
+  --dy: -36px;
+  --rot: 8deg;
 }
 
-.container.dark .colony-bg::after {
-  opacity: 0.24;
+.gif-four {
+  --dx: -34px;
+  --dy: -24px;
+  --rot: -7deg;
 }
 
 /* 1. LAYER - DARK MODE OVERLAY (Fixed to Viewport) */
@@ -783,6 +775,33 @@ body, html {
   }
 }
 
+@keyframes bgPopIn {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0) scale(0.45);
+  }
+  70% {
+    opacity: 0.36;
+    transform: translate3d(0, -4px, 0) scale(1.02);
+  }
+  100% {
+    opacity: 0.28;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes bgDriftLoop {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translate3d(var(--dx), var(--dy), 0) rotate(var(--rot)) scale(1.05);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(1);
+  }
+}
+
 @keyframes liveGradientLight {
   0% {
     background-position: 0% 45%;
@@ -819,30 +838,6 @@ body, html {
   }
 }
 
-@keyframes colonyFloatA {
-  0% {
-    transform: translate3d(-1.5%, -1%, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(1.8%, 1.2%, 0) scale(1.03);
-  }
-  100% {
-    transform: translate3d(-1%, 1.6%, 0) scale(1.01);
-  }
-}
-
-@keyframes colonyFloatB {
-  0% {
-    transform: translate3d(1.5%, 1%, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(-1.6%, -1.8%, 0) scale(1.04);
-  }
-  100% {
-    transform: translate3d(1.2%, -1.1%, 0) scale(1.02);
-  }
-}
-
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -858,8 +853,7 @@ body, html {
   .container,
   .container::after,
   .container::before,
-  .colony-bg::before,
-  .colony-bg::after,
+  .bg-gif,
   .header,
   .controls,
   .colony-count-box,
