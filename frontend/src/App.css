@@ -783,12 +783,15 @@ body, html {
   0%,
   72% {
     opacity: 0.28;
+    transform: translate3d(0, 0, 0) scale(1);
   }
   86% {
     opacity: 0.16;
+    transform: translate3d(0, 0, 0) scale(0.88);
   }
   100% {
     opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.68);
   }
 }
 

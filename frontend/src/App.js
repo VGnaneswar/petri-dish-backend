@@ -25,6 +25,15 @@ function App() {
 
   // ✅ THEME STATE (NEW)
   const [theme, setTheme] = useState("light");
+  const [spriteCycle, setSpriteCycle] = useState(0);
+
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setSpriteCycle((prev) => prev + 1);
+    }, 9000);
+
+    return () => window.clearInterval(intervalId);
+  }, []);
 
   const floatingSprites = useMemo(() => {
     const gifPool = [
@@ -40,7 +49,7 @@ function App() {
       const rot = random(4, 12) * (Math.random() > 0.5 ? 1 : -1);
 
       return {
-        id: `bg-gif-${i}`,
+        id: `bg-gif-${spriteCycle}-${i}`,
         src: gifPool[Math.floor(Math.random() * gifPool.length)],
         style: {
           "--x": `${random(6, 90).toFixed(1)}%`,
@@ -54,7 +63,7 @@ function App() {
         },
       };
     });
-  }, []);
+  }, [spriteCycle]);
 
   useEffect(() => {
     const fetchHistory = async () => {
