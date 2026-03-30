@@ -1,6 +1,6 @@
 // frontend/src/App.js
 
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import api from "./axiosMiddleware";
 import "./App.css";
 
@@ -26,15 +26,35 @@ function App() {
   // ✅ THEME STATE (NEW)
   const [theme, setTheme] = useState("light");
 
-  const floatingSprites = useMemo(() => {
+  const random = (min, max) => Math.random() * (max - min) + min;
+
+  const createFloatingSprites = (prevSprites = [], cycle = 0) => {
     const gifPool = [
       "/Bacterium,_Single_cell_organism_20260330172004.gif",
       "/bacterium_20260330172046.gif",
     ];
 
-    const random = (min, max) => Math.random() * (max - min) + min;
+    const pickNonRepeating = (min, max, previousValue, minDelta) => {
+      let nextValue = random(min, max);
+      let attempts = 0;
+
+      while (
+        typeof previousValue === "number" &&
+        Math.abs(nextValue - previousValue) < minDelta &&
+        attempts < 16
+      ) {
+        nextValue = random(min, max);
+        attempts += 1;
+      }
+
+      return nextValue;
+    };
 
     return Array.from({ length: 6 }, (_, i) => {
+      const previous = prevSprites[i];
+      const x = pickNonRepeating(6, 90, previous?.x, 10);
+      const y = pickNonRepeating(8, 84, previous?.y, 10);
+
       const dx = random(22, 48) * (Math.random() > 0.5 ? 1 : -1);
       const dy = random(18, 42) * (Math.random() > 0.5 ? 1 : -1);
       const rot = random(4, 12) * (Math.random() > 0.5 ? 1 : -1);
@@ -46,14 +66,16 @@ function App() {
       const rot3 = rot * 0.2;
 
       return {
-        id: `bg-gif-${i}`,
+        id: `bg-gif-${cycle}-${i}`,
+        x,
+        y,
         src: gifPool[Math.floor(Math.random() * gifPool.length)],
         style: {
-          "--x": `${random(6, 90).toFixed(1)}%`,
-          "--y": `${random(8, 84).toFixed(1)}%`,
+          "--x": `${x.toFixed(1)}%`,
+          "--y": `${y.toFixed(1)}%`,
           "--size": `${random(56, 86).toFixed(0)}px`,
-          "--dur": `${random(10, 16).toFixed(1)}s`,
-          "--delay": `${(i * 0.24).toFixed(2)}s`,
+          "--dur": "12s",
+          "--delay": `${(i * 0.22).toFixed(2)}s`,
           "--dx": `${dx.toFixed(0)}px`,
           "--dy": `${dy.toFixed(0)}px`,
           "--rot": `${rot.toFixed(0)}deg`,
@@ -66,6 +88,18 @@ function App() {
         },
       };
     });
+  };
+
+  const [floatingSprites, setFloatingSprites] = useState(() => createFloatingSprites([], 0));
+
+  useEffect(() => {
+    let cycle = 1;
+    const intervalId = window.setInterval(() => {
+      setFloatingSprites((prev) => createFloatingSprites(prev, cycle));
+      cycle += 1;
+    }, 12000);
+
+    return () => window.clearInterval(intervalId);
   }, []);
 
   useEffect(() => {
