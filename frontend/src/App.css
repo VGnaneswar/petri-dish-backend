@@ -2,7 +2,7 @@
 :root {
   /* Define gradients globally so they are always available for transition */
   --bg-light: linear-gradient(120deg, #effff5 0%, #d9fbe7 35%, #c1f3d8 70%, #abebca 100%);
-  --bg-dark: linear-gradient(120deg, #03140f 0%, #063226 35%, #0b4a37 70%, #0f5c43 100%);
+  --bg-dark: linear-gradient(120deg, #0a261d 0%, #0d3a2c 35%, #135442 70%, #1a6a52 100%);
 }
 
 .container.light {
@@ -27,7 +27,7 @@
   --accent: #22c55e;
   --border: rgba(255, 255, 255, 0.08);
   --shadow: rgba(0, 0, 0, 0.6);
-  --highlight: rgba(255, 255, 255, 0.05);
+  --highlight: rgba(255, 255, 255, 0.08);
 
   /* Scrollbar for Dark Mode */
   --scrollbar-bg: rgba(255, 255, 255, 0.05);
@@ -100,7 +100,7 @@ body, html {
   
   isolation: isolate; /* Stacking context for pseudo-elements */
 
-  animation: pageFadeIn 0.7s ease-out, liveGradientLight 20s ease-in-out infinite;
+  animation: pageFadeIn 0.7s ease-out, liveGradientLight 16s ease-in-out infinite;
 }
 
 /* Ensure all direct children sit clearly above the background layers */
@@ -121,11 +121,11 @@ body, html {
   z-index: -2; /* Sit right on top of the light background */
   transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
-  animation: liveGradientDark 24s ease-in-out infinite;
+  animation: liveGradientDark 20s ease-in-out infinite;
 }
 
 .container.dark::after {
-  opacity: 1;
+  opacity: 0.88;
 }
 
 /* 2. LAYER - SHEEN / REFLECTION */
@@ -747,6 +747,7 @@ body, html {
 
 @media (prefers-reduced-motion: reduce) {
   .container,
+  .container::after,
   .container::before,
   .header,
   .controls,
