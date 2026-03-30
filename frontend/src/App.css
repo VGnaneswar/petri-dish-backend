@@ -1,12 +1,26 @@
 /* ===== ROOT THEME VARIABLES ===== */
 :root {
   /* Define gradients globally so they are always available for transition */
-  --bg-light:
-    radial-gradient(130% 120% at 6% 8%, rgba(94, 255, 177, 0.58) 0%, rgba(54, 228, 145, 0.34) 30%, rgba(0, 0, 0, 0) 64%),
-    linear-gradient(132deg, #17d568 0%, #0aa550 42%, #066d36 72%, #023d20 100%);
-  --bg-dark:
-    radial-gradient(130% 120% at 8% 10%, rgba(54, 214, 126, 0.42) 0%, rgba(14, 102, 60, 0.2) 32%, rgba(0, 0, 0, 0) 62%),
-    linear-gradient(132deg, #0a7c3d 0%, #065628 42%, #04391b 72%, #021f10 100%);
+  --bg-light: linear-gradient(
+    120deg,
+    #f6fff9 0%,
+    #e8fdef 18%,
+    #d9fbe7 36%,
+    #cbf8df 52%,
+    #b9f1d3 68%,
+    #a6e9c5 84%,
+    #93e0b8 100%
+  );
+  --bg-dark: linear-gradient(
+    120deg,
+    #010806 0%,
+    #02130f 16%,
+    #041e18 32%,
+    #052923 48%,
+    #07342c 64%,
+    #094037 82%,
+    #0b4b41 100%
+  );
 }
 
 .container.light {
@@ -92,7 +106,7 @@ body, html {
 
   /* Theme Background (Light Mode Base) */
   background: var(--bg-light);
-  background-size: 120% 120%, 120% 120%;
+  background-size: 180% 180%;
   background-position: 0% 50%;
   background-attachment: fixed;
   
@@ -104,7 +118,7 @@ body, html {
   
   isolation: isolate; /* Stacking context for pseudo-elements */
 
-  animation: pageFadeIn 0.7s ease-out, liveGradientLight 16s ease-in-out infinite;
+  animation: pageFadeIn 0.7s ease-out, liveGradientLight 9s ease-in-out infinite;
 }
 
 /* Ensure all direct children sit clearly above the background layers */
@@ -119,22 +133,34 @@ body, html {
   position: fixed; /* Stick to screen, don't scroll with content */
   inset: 0;
   background: var(--bg-dark);
-  background-size: 120% 120%, 120% 120%;
+  background-size: 180% 180%;
   background-position: 100% 50%;
   opacity: 0;
   z-index: -2; /* Sit right on top of the light background */
   transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1);
   pointer-events: none;
-  animation: liveGradientDark 20s ease-in-out infinite;
+  animation: liveGradientDark 11s ease-in-out infinite;
 }
 
 .container.dark::after {
   opacity: 1;
 }
 
-/* 2. LAYER - DISABLED (keep gradient only on site background) */
+/* 2. LAYER - SHEEN / REFLECTION */
 .container::before {
-  content: none;
+  content: "";
+  position: fixed; /* Stick to screen */
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 50% 50%, var(--highlight), transparent 60%);
+  opacity: 0.15;
+  pointer-events: none;
+  z-index: -1; /* Sit above dark overlay, below content */
+  transform: rotate(30deg);
+  transition: opacity 1.5s ease;
+  animation: sheenFloat 16s ease-in-out infinite;
 }
 
 .glass {
@@ -704,25 +730,37 @@ body, html {
 
 @keyframes liveGradientLight {
   0% {
-    background-position: 0% 50%;
+    background-position: 0% 45%;
+  }
+  25% {
+    background-position: 100% 30%;
   }
   50% {
-    background-position: 100% 50%;
+    background-position: 80% 85%;
+  }
+  75% {
+    background-position: 20% 75%;
   }
   100% {
-    background-position: 0% 50%;
+    background-position: 0% 45%;
   }
 }
 
 @keyframes liveGradientDark {
   0% {
-    background-position: 100% 50%;
+    background-position: 100% 60%;
+  }
+  25% {
+    background-position: 15% 30%;
   }
   50% {
-    background-position: 0% 50%;
+    background-position: 0% 80%;
+  }
+  75% {
+    background-position: 70% 25%;
   }
   100% {
-    background-position: 100% 50%;
+    background-position: 100% 60%;
   }
 }
 
